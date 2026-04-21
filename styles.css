@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#password-page h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+#password-page input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#password-page input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+#password-page button {
+    width: 100%;
+    padding: 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#password-page button:hover {
+    background: #764ba2;
+}
+
+#error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Birthday Page Styles */
+#birthday-page {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    width: 90%;
+}
+
+#birthday-page h1 {
+    color: #764ba2;
+    font-size: 48px;
+    margin-bottom: 30px;
+    animation: bounce 1s infinite;
+}
+
+#birthday-page h2 {
+    color: #667eea;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.wishes {
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+.wishes p {
+    color: #333;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.gallery {
+    margin-top: 30px;
+}
+
+.gallery img {
+    width: 100%;
+    max-width: 300px;
+    margin: 10px;
+    border-radius: 5px;
+    transition: transform 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
