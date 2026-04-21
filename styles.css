@@ -11,72 +11,160 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 .container {
     background: white;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    max-width: 500px;
-    width: 90%;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    width: 100%;
 }
 
 .hidden {
     display: none !important;
 }
 
-#password-page h1 {
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 28px;
+/* WORDLE STYLES */
+#wordle-page h1 {
+    text-align: center;
+    color: #764ba2;
+    margin-bottom: 30px;
+    font-size: 32px;
 }
 
-#password-page input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
+#wordle-game {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#board {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.wordle-row {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.wordle-cell {
+    width: 50px;
+    height: 50px;
     border: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
     border-radius: 5px;
-    font-size: 16px;
+    background: white;
+    text-transform: uppercase;
 }
 
-#password-page input:focus {
-    outline: none;
+.wordle-cell.current {
     border-color: #667eea;
+    background: #f0f0f0;
 }
 
-#password-page button {
-    width: 100%;
-    padding: 12px;
-    background: #667eea;
+.wordle-cell.correct {
+    background: #6aaa64;
     color: white;
+    border-color: #6aaa64;
+}
+
+.wordle-cell.present {
+    background: #b59f3b;
+    color: white;
+    border-color: #b59f3b;
+}
+
+.wordle-cell.absent {
+    background: #787c7e;
+    color: white;
+    border-color: #787c7e;
+}
+
+#keyboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+}
+
+.key {
+    padding: 10px 8px;
+    background: #e0e0e0;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s;
+    font-weight: bold;
+    font-size: 12px;
+    transition: all 0.2s;
 }
 
-#password-page button:hover {
+.key:hover {
+    background: #d0d0d0;
+}
+
+.key.special {
+    flex: 1;
+    max-width: 100px;
+    background: #667eea;
+    color: white;
+}
+
+.key.special:hover {
     background: #764ba2;
 }
 
-#error {
-    color: red;
-    margin-top: 10px;
-    font-size: 14px;
+.key.correct {
+    background: #6aaa64;
+    color: white;
 }
 
-/* Birthday Page Styles */
+.key.present {
+    background: #b59f3b;
+    color: white;
+}
+
+.key.absent {
+    background: #787c7e;
+    color: white;
+}
+
+#message {
+    text-align: center;
+    font-weight: bold;
+    min-height: 20px;
+}
+
+#message.error {
+    color: #d32f2f;
+}
+
+#message.success {
+    color: #388e3c;
+}
+
+#message.info {
+    color: #667eea;
+}
+
+/* BIRTHDAY PAGE STYLES */
 #birthday-page {
     background: white;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     max-width: 800px;
-    width: 90%;
+    width: 100%;
+    text-align: center;
 }
 
 #birthday-page h1 {
@@ -94,15 +182,16 @@ body {
 
 .wishes {
     background: #f0f0f0;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 30px;
+    border-radius: 10px;
     margin-bottom: 30px;
 }
 
 .wishes p {
     color: #333;
     font-size: 18px;
-    line-height: 1.6;
+    line-height: 1.8;
+    margin-bottom: 10px;
 }
 
 .gallery {
@@ -112,9 +201,10 @@ body {
 .gallery img {
     width: 100%;
     max-width: 300px;
-    margin: 10px;
-    border-radius: 5px;
+    margin: 15px;
+    border-radius: 10px;
     transition: transform 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .gallery img:hover {
@@ -127,5 +217,17 @@ body {
     }
     50% {
         transform: translateY(-10px);
+    }
+}
+
+@media (max-width: 600px) {
+    .wordle-cell {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    #birthday-page h1 {
+        font-size: 36px;
     }
 }
