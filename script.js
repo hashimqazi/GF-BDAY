@@ -1,5 +1,5 @@
 // PASSWORD CONFIGURATION - Change this to your desired password
-const CORRECT_PASSWORD = "CHANGE_ME"; // Update this with your password
+const CORRECT_PASSWORD = "Hashim"; // Update this with your password
 
 document.getElementById('submit').addEventListener('click', checkPassword);
 document.getElementById('password').addEventListener('keypress', function(e) {
