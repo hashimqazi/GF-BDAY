@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Birthday Password Protected</title>
+</head>
+<body>
+    <div id="password-page" class="container">
+        <h1>Enter Password</h1>
+        <input type="password" id="password" placeholder="Password">
+        <button id="submit">Submit</button>
+        <p id="error" class="hidden">Incorrect Password. Try again.</p>
+    </div>
+    <div id="birthday-page" class="hidden">
+        <h1>Happy Birthday!</h1>
+        <div class="wishes">
+            <p>Wishing you a day filled with love and cheer!</p>
+        </div>
+        <div class="gallery">
+            <h2>Photo Gallery</h2>
+            <img src="photo1.jpg" alt="Birthday Photo 1">
+            <img src="photo2.jpg" alt="Birthday Photo 2">
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
