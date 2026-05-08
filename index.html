@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Birthday Wordle</title>
+    <title>Birthday Surprise</title>
 </head>
 <body>
+    <!-- WORDLE PAGE -->
     <div id="wordle-page" class="container">
         <h1>🎮 Play Wordle to Unlock</h1>
         <div id="wordle-game">
@@ -15,18 +16,77 @@
             <div id="message"></div>
         </div>
     </div>
+
+    <!-- BIRTHDAY MESSAGE PAGE -->
     <div id="birthday-page" class="hidden">
-        <h1>Happy Birthday! 🎉</h1>
-        <div class="wishes">
-            <p>You made it! Happy Birthday to my PHATASS! 😘</p>
-            <p>I love you more than anything in this world.</p>
-        </div>
-        <div class="gallery">
-            <h2>Our Memories 💕</h2>
-            <img src="photo1.jpg" alt="Birthday Photo 1">
-            <img src="photo2.jpg" alt="Birthday Photo 2">
+        <div class="container">
+            <h1>Happy Birthday! 🎉</h1>
+            <div class="wishes">
+                <p>You made it! Happy Birthday to my PHATASS! 😘</p>
+                <p>I love you more than anything in this world.</p>
+                <p>Keep scrolling to unlock the next challenge...</p>
+            </div>
+            <button id="next-btn" class="btn-next">Next Challenge →</button>
         </div>
     </div>
+
+    <!-- CONNECTIONS GAME PAGE -->
+    <div id="connections-page" class="hidden">
+        <div class="container">
+            <h1>🎮 Play Connections to Unlock Photos</h1>
+            <div class="connections-info">
+                <p>Find groups of four related items</p>
+                <p id="attempts-left">Mistakes left: <span id="mistakes">4</span></p>
+            </div>
+            <div id="connections-grid" class="connections-grid"></div>
+            <div class="connections-buttons">
+                <button id="deselect-btn" class="btn">Deselect All</button>
+                <button id="submit-btn" class="btn">Submit</button>
+                <button id="shuffle-btn" class="btn">Shuffle</button>
+            </div>
+            <div id="connections-message"></div>
+            <div id="solved-groups"></div>
+        </div>
+    </div>
+
+    <!-- PHOTO GALLERY PAGE -->
+    <div id="gallery-page" class="hidden">
+        <div class="container">
+            <h1>Our Memories 💕</h1>
+            <div class="gallery">
+                <div class="photo-item">
+                    <img src="photo1.jpg" alt="Photo 1">
+                    <p class="photo-caption">Add your caption here</p>
+                </div>
+                <div class="photo-item">
+                    <img src="photo2.jpg" alt="Photo 2">
+                    <p class="photo-caption">Add your caption here</p>
+                </div>
+                <div class="photo-item">
+                    <img src="photo3.jpg" alt="Photo 3">
+                    <p class="photo-caption">Add your caption here</p>
+                </div>
+                <div class="photo-item">
+                    <img src="photo4.jpg" alt="Photo 4">
+                    <p class="photo-caption">Add your caption here</p>
+                </div>
+                <div class="photo-item">
+                    <img src="photo5.jpg" alt="Photo 5">
+                    <p class="photo-caption">Add your caption here</p>
+                </div>
+                <div class="photo-item">
+                    <img src="photo6.jpg" alt="Photo 6">
+                    <p class="photo-caption">Add your caption here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO PLAYER (Hidden) -->
+    <audio id="background-music" loop>
+        <source src="music/tifl.mp3" type="audio/mpeg">
+    </audio>
+
     <script src="script.js"></script>
 </body>
 </html>
