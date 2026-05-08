@@ -1,4 +1,4 @@
-// WORDLE CONFIGURATION
+// ============ WORDLE GAME ============
 const TARGET_WORD = "PHATASS";
 const MAX_ATTEMPTS = 6;
 const WORD_LENGTH = 7;
@@ -8,14 +8,51 @@ let attempts = 0;
 let gameWon = false;
 let guesses = [];
 
+// CONNECTIONS GAME DATA
+const CONNECTIONS_DATA = {
+    groups: [
+        {
+            name: "BRAINROT",
+            items: ["Tung Tung Tung Sahur", "Ballerina Cappucina", "Bombardino Crocodilo", "Tralalero Tralala"],
+            color: "#FFB6C1"
+        },
+        {
+            name: "PLACES WE'VE BEEN TO ON A DATE",
+            items: ["Scene 92", "Nueplex", "Xanders", "Mcdonalds"],
+            color: "#87CEEB"
+        },
+        {
+            name: "PET NAMES",
+            items: ["Sleepyhead", "Bubs", "Darling", "Sly Bunny"],
+            color: "#DDA0DD"
+        },
+        {
+            name: "DEROGATORY RACIAL SLURS",
+            items: ["Coon", "Jigaboo", "Boy", "Nigger"],
+            color: "#FFD700"
+        }
+    ]
+};
+
+let connectionsState = {
+    items: [],
+    selected: new Set(),
+    mistakes: 4,
+    solved: [],
+    gameWon: false
+};
+
 // Initialize the game
 document.addEventListener('DOMContentLoaded', function() {
-    initializeGame();
-    setupKeyboard();
+    initializeWordle();
+    setupWordleKeyboard();
     setupPhysicalKeyboard();
+    setupNextButton();
+    setupConnectionsButtons();
 });
 
-function initializeGame() {
+// ============ WORDLE FUNCTIONS ============
+function initializeWordle() {
     drawBoard();
 }
 
@@ -45,7 +82,7 @@ function drawBoard() {
     }
 }
 
-function setupKeyboard() {
+function setupWordleKeyboard() {
     const keyboard = document.getElementById('keyboard');
     keyboard.innerHTML = '';
     
@@ -56,7 +93,6 @@ function setupKeyboard() {
         button.textContent = letter;
         button.className = 'key';
         
-        // Mark used letters
         guesses.forEach(guess => {
             guess.forEach(cell => {
                 if (cell.letter === letter) {
@@ -69,7 +105,6 @@ function setupKeyboard() {
         keyboard.appendChild(button);
     });
     
-    // Add special keys
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '⌫ DELETE';
     deleteBtn.className = 'key special';
@@ -100,19 +135,19 @@ function handleKeyPress(letter) {
     if (currentGuess.length < WORD_LENGTH && attempts < MAX_ATTEMPTS && !gameWon) {
         currentGuess += letter;
         drawBoard();
-        setupKeyboard();
+        setupWordleKeyboard();
     }
 }
 
 function handleDelete() {
     currentGuess = currentGuess.slice(0, -1);
     drawBoard();
-    setupKeyboard();
+    setupWordleKeyboard();
 }
 
 function handleSubmit() {
     if (currentGuess.length !== WORD_LENGTH) {
-        showMessage('Word must be 7 letters!', 'error');
+        showWordleMessage('Word must be 7 letters!', 'error');
         return;
     }
     
@@ -121,12 +156,10 @@ function handleSubmit() {
     const targetArray = TARGET_WORD.split('');
     const targetCount = {};
     
-    // Count letters in target
     targetArray.forEach(letter => {
         targetCount[letter] = (targetCount[letter] || 0) + 1;
     });
     
-    // First pass: mark greens
     guess.forEach((letter, i) => {
         if (letter === targetArray[i]) {
             result[i] = { letter, status: 'correct' };
@@ -136,7 +169,6 @@ function handleSubmit() {
         }
     });
     
-    // Second pass: mark yellows and grays
     guess.forEach((letter, i) => {
         if (result[i].status === null) {
             if (targetCount[letter] > 0) {
@@ -151,23 +183,22 @@ function handleSubmit() {
     guesses[attempts] = result;
     attempts++;
     
-    // Check if won
     if (currentGuess === TARGET_WORD) {
         gameWon = true;
-        showMessage('🎉 You got it! Unlocking your birthday surprise...', 'success');
+        showWordleMessage('🎉 You got it! Unlocking your birthday surprise...', 'success');
         setTimeout(() => unlockBirthday(), 1500);
     } else if (attempts >= MAX_ATTEMPTS) {
-        showMessage(`Game Over! The word was ${TARGET_WORD}`, 'error');
+        showWordleMessage(`Game Over! The word was ${TARGET_WORD}`, 'error');
     } else {
-        showMessage(`${MAX_ATTEMPTS - attempts} attempts remaining`, 'info');
+        showWordleMessage(`${MAX_ATTEMPTS - attempts} attempts remaining`, 'info');
     }
     
     currentGuess = '';
     drawBoard();
-    setupKeyboard();
+    setupWordleKeyboard();
 }
 
-function showMessage(msg, type) {
+function showWordleMessage(msg, type) {
     const messageEl = document.getElementById('message');
     messageEl.textContent = msg;
     messageEl.className = type;
@@ -177,8 +208,182 @@ function unlockBirthday() {
     document.getElementById('wordle-page').classList.add('hidden');
     document.getElementById('birthday-page').classList.remove('hidden');
     createConfetti();
+    const audio = document.getElementById('background-music');
+    audio.play().catch(() => console.log('Audio autoplay prevented'));
 }
 
+function setupNextButton() {
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.addEventListener('click', () => {
+        document.getElementById('birthday-page').classList.add('hidden');
+        document.getElementById('connections-page').classList.remove('hidden');
+        initializeConnections();
+    });
+}
+
+// ============ CONNECTIONS GAME ============
+function initializeConnections() {
+    connectionsState = {
+        items: [],
+        selected: new Set(),
+        mistakes: 4,
+        solved: [],
+        gameWon: false
+    };
+    
+    CONNECTIONS_DATA.groups.forEach(group => {
+        group.items.forEach(item => {
+            connectionsState.items.push({
+                text: item,
+                group: group.name,
+                color: group.color
+            });
+        });
+    });
+    
+    shuffleArray(connectionsState.items);
+    drawConnectionsGrid();
+}
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function drawConnectionsGrid() {
+    const grid = document.getElementById('connections-grid');
+    grid.innerHTML = '';
+    
+    connectionsState.items.forEach((item, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'connections-item';
+        btn.textContent = item.text;
+        btn.dataset.index = index;
+        
+        if (connectionsState.selected.has(index)) {
+            btn.classList.add('selected');
+        }
+        
+        const isSolved = connectionsState.solved.some(group => 
+            group.items.some(solvedItem => solvedItem.text === item.text)
+        );
+        
+        if (isSolved) {
+            btn.classList.add('solved');
+            btn.style.backgroundColor = item.color;
+            btn.disabled = true;
+        }
+        
+        btn.addEventListener('click', () => toggleSelection(index));
+        grid.appendChild(btn);
+    });
+    
+    updateMistakesDisplay();
+}
+
+function toggleSelection(index) {
+    if (connectionsState.selected.has(index)) {
+        connectionsState.selected.delete(index);
+    } else {
+        if (connectionsState.selected.size < 4) {
+            connectionsState.selected.add(index);
+        }
+    }
+    drawConnectionsGrid();
+}
+
+function setupConnectionsButtons() {
+    document.getElementById('deselect-btn').addEventListener('click', () => {
+        connectionsState.selected.clear();
+        drawConnectionsGrid();
+    });
+    
+    document.getElementById('submit-btn').addEventListener('click', submitConnections);
+    
+    document.getElementById('shuffle-btn').addEventListener('click', () => {
+        shuffleArray(connectionsState.items);
+        connectionsState.selected.clear();
+        drawConnectionsGrid();
+    });
+}
+
+function submitConnections() {
+    if (connectionsState.selected.size !== 4) {
+        showConnectionsMessage('Select exactly 4 items', 'error');
+        return;
+    }
+    
+    const selectedItems = Array.from(connectionsState.selected).map(i => connectionsState.items[i]);
+    const selectedGroups = new Set(selectedItems.map(item => item.group));
+    
+    if (selectedGroups.size === 1) {
+        // Correct group found
+        const groupName = Array.from(selectedGroups)[0];
+        const correctGroup = CONNECTIONS_DATA.groups.find(g => g.name === groupName);
+        
+        connectionsState.solved.push({
+            name: groupName,
+            items: selectedItems,
+            color: correctGroup.color
+        });
+        
+        connectionsState.items = connectionsState.items.filter(item => 
+            !connectionsState.solved.some(group => 
+                group.items.some(solvedItem => solvedItem.text === item.text)
+            )
+        );
+        
+        connectionsState.selected.clear();
+        showConnectionsMessage('✅ Correct!', 'success');
+        
+        if (connectionsState.solved.length === 4) {
+            connectionsState.gameWon = true;
+            setTimeout(() => unlockGallery(), 1500);
+        } else {
+            setTimeout(() => drawConnectionsGrid(), 500);
+        }
+    } else if (selectedGroups.size === 4) {
+        // All different groups
+        connectionsState.mistakes--;
+        connectionsState.selected.clear();
+        showConnectionsMessage('All different!', 'error');
+        if (connectionsState.mistakes <= 0) {
+            showConnectionsMessage('Game Over!', 'error');
+        } else {
+            setTimeout(() => drawConnectionsGrid(), 500);
+        }
+    } else {
+        // Mixed groups
+        connectionsState.mistakes--;
+        connectionsState.selected.clear();
+        showConnectionsMessage('One away...', 'warning');
+        if (connectionsState.mistakes <= 0) {
+            showConnectionsMessage('Game Over!', 'error');
+        } else {
+            setTimeout(() => drawConnectionsGrid(), 500);
+        }
+    }
+}
+
+function showConnectionsMessage(msg, type) {
+    const messageEl = document.getElementById('connections-message');
+    messageEl.textContent = msg;
+    messageEl.className = type;
+}
+
+function updateMistakesDisplay() {
+    document.getElementById('mistakes').textContent = connectionsState.mistakes;
+}
+
+function unlockGallery() {
+    document.getElementById('connections-page').classList.add('hidden');
+    document.getElementById('gallery-page').classList.remove('hidden');
+    createConfetti();
+}
+
+// ============ CONFETTI ============
 function createConfetti() {
     const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#ff6b9d'];
     for (let i = 0; i < 100; i++) {
